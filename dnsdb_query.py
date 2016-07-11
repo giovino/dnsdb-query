@@ -24,6 +24,7 @@ import sys
 import time
 import urllib
 import urllib2
+from signal import signal, SIGPIPE, SIG_DFL
 from cStringIO import StringIO
 
 try:
@@ -280,6 +281,7 @@ def main():
                     sys.exit(1)
                 results.sort(key=lambda r: r[options.sort], reverse=options.reverse)
         for res in results:
+            signal(SIGPIPE, SIG_DFL)
             sys.stdout.write('%s\n' % fmt_func(res))
     except QueryError, e:
         print >>sys.stderr, e.message
